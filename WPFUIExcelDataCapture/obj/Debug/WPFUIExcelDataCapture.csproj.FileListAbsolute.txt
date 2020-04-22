@@ -20,8 +20,6 @@ D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\obj\Deb
 D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\obj\Debug\WPFUIExcelDataCapture.pdb
 D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\obj\Debug\Views\Dashboard.g.cs
 D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\obj\Debug\Views\Dashboard.baml
-D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\bin\Debug\ExcelDataCapture.dll
-D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\bin\Debug\ExcelDataCapture.pdb
 D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\obj\Debug\Views\HomeView.g.cs
 D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\obj\Debug\Views\HomeView.baml
 D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\obj\Debug\Views\SettingsView.g.cs
@@ -36,3 +34,7 @@ D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\bin\Deb
 D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\bin\Debug\WPFUIExcelDataCapture.application
 D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\obj\Debug\WPFUIExcelDataCapture.exe.manifest
 D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\obj\Debug\WPFUIExcelDataCapture.application
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\bin\Debug\AsposeExcelDataCapture.dll
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\bin\Debug\Aspose.Cells.dll
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\bin\Debug\AsposeExcelDataCapture.pdb
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\bin\Debug\Aspose.Cells.xml

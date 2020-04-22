@@ -12,9 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ExcelDataCapture;
 using WPFUIExcelDataCapture.Models;
 using TextMatchCalculation;
+using AsposeExcelDataCapture;
+using Microsoft.Win32;
 
 namespace WPFUIExcelDataCapture.Views
 {
@@ -27,6 +28,14 @@ namespace WPFUIExcelDataCapture.Views
         public List<ColumnParser> columnParsers = new List<ColumnParser>();
         public string DestinationCurrentWorksheet;
         public string SourceCurrentWorksheet;
+        private AsposeExcel _templateExcel;
+
+        public AsposeExcel Template
+        {
+            get { return _templateExcel; }
+            set { _templateExcel = value; }
+        }
+
 
         public ComparisonView(MigrationContainer migration)
         {
@@ -49,43 +58,61 @@ namespace WPFUIExcelDataCapture.Views
 
         private void LoadComparisonView()
         {
-            if (_migration.Destination != null)
+            if (!_migration.TemplateAttached)
             {
-                var captionsWithIndex = _migration.Destination.ColumnCaptionsWithIndex;
-                foreach (var col in captionsWithIndex)
+                if (_migration.Destination != null)
                 {
-                    ColumnParser parser = new ColumnParser();
-                    parser.DestinationColumnName = col.Key;
-                    parser.DestinationColumnIndex = col.Value;
-                    parser.DestinationColumnCaptionList = _migration.Destination.ColumnCaptions;
-                    parser.SourceColumnCaptionList = _migration.Source.ColumnCaptions;
-                    FillSourceIfFoundDestination(parser, col.Key);
+                    var captionsWithIndex = _migration.Destination.ColumnCaptionsWithIndexDictionary;
+                    foreach (var col in captionsWithIndex)
+                    {
+                        ColumnParser parser = new ColumnParser();
+                        parser.DestinationColumnName = col.Key;
+                        parser.DestinationColumnIndex = col.Value;
+                        parser.DestinationColumnCaptionList = _migration.Destination.ColumnCaptionList;
+                        parser.SourceColumnCaptionList = _migration.Source.ColumnCaptionList;
+                        FillSourceIfFoundDestination(parser, col.Key);
 
-                    columnParsers.Add(parser);
+                        columnParsers.Add(parser);
+                    }
+                    itemsListColumnParsers.ItemsSource = columnParsers;
                 }
-                itemsListColumnParsers.ItemsSource = columnParsers;
             }
+            else
+            {
+                if (_migration.Destination != null)
+                {
+                    foreach (var parser in _migration.ColumnParsers)
+                    {
+                        parser.DestinationColumnCaptionList = _migration.Destination.ColumnCaptionList;
+                        parser.SourceColumnCaptionList = _migration.Source.ColumnCaptionList;
+
+                        columnParsers.Add(parser);
+                    }
+                    itemsListColumnParsers.ItemsSource = columnParsers;
+                }
+            }
+            
         }
 
         public void FillSourceIfFoundDestination(ColumnParser parser, string caption)
         {
-            if(_migration.Source.ColumnCaptionsWithIndex.ContainsKey(caption))
+            if(_migration.Source.ColumnCaptionsWithIndexDictionary.ContainsKey(caption))
             {
                 parser.SourceColumnName = caption;
-                parser.SourceColumnIndex = _migration.Source.ColumnCaptionsWithIndex[caption];
+                parser.SourceColumnIndex = _migration.Source.ColumnCaptionsWithIndexDictionary[caption];
             }
             else
             {
-                if (_migration.Source.ColumnCaptionsWithIndex.ContainsKey(caption))
+                if (_migration.Source.ColumnCaptionsWithIndexDictionary.ContainsKey(caption))
                 {
                     parser.SourceColumnName = caption;
-                    parser.SourceColumnIndex = _migration.Source.ColumnCaptionsWithIndex[caption.ToLower()];
+                    parser.SourceColumnIndex = _migration.Source.ColumnCaptionsWithIndexDictionary[caption.ToLower()];
                 }
                 else
                 {
                     string highest = string.Empty;
                     int memory = 0;
-                    foreach (var par in _migration.Source.ColumnCaptions)
+                    foreach (var par in _migration.Source.ColumnCaptionList)
                     {
                         int distance = Levenstein.NettoDistance(par, caption);
                         if (distance < memory)
@@ -98,7 +125,7 @@ namespace WPFUIExcelDataCapture.Views
                     if (memory <= 3)
                     {
                         parser.SourceColumnName = highest;
-                        parser.SourceColumnIndex = _migration.Source.ColumnCaptionsWithIndex[highest];
+                        parser.SourceColumnIndex = _migration.Source.ColumnCaptionsWithIndexDictionary[highest];
                     }
                 }
             }
@@ -168,7 +195,7 @@ namespace WPFUIExcelDataCapture.Views
                     bool permission = true;
                     int row = 0;
 
-                    int columncaptionsindex = _migration.Destination.ColumnCaptionIndex;
+                    int columncaptionsindex = _migration.Destination.ColumnCaptionRow;
                     foreach (var cl in sortedSourceKeys)
                     {
                         if (cl.Key != string.Empty)
@@ -196,27 +223,27 @@ namespace WPFUIExcelDataCapture.Views
         }
         private void FromSource2DestinationWithRelationByRow(int destinationRow, KeyValuePair<string, int> cl, Dictionary<string,int> sourceKeys, bool permission)
         {
-            int columncaptionsindex = _migration.Destination.ColumnCaptionIndex;
+            int columncaptionsindex = _migration.Destination.ColumnCaptionRow;
             foreach (var columnparser in columnParsers)
             {
                 if ((columnparser.SourceColumnIndex == 0 && permission == true) || columnparser.SourceColumnIndex > 0)
                 {
                     if (columnparser.LookupMatch)
                     {
-                        if (sourceKeys.Keys.Contains(_migration.Source.ReadCell(cl.Value, columnparser.SourceColumnIndex + 1)))
+                        if (sourceKeys.Keys.Contains(_migration.Source.ReadCell(cl.Value, columnparser.SourceColumnIndex)))
                         {
                             _migration.Destination.WriteCell(destinationRow, columnparser.DestinationColumnIndex + 1,
-                                _migration.Source.ReadCell(cl.Value + columncaptionsindex, columnparser.SourceColumnIndex + 1));
+                                _migration.Source.ReadCell(cl.Value + columncaptionsindex, columnparser.SourceColumnIndex));
                         }
                         else
                         {
-                            _migration.Destination.WriteCell(destinationRow, columnparser.DestinationColumnIndex + 1, "");
+                            _migration.Destination.WriteCell(destinationRow, columnparser.DestinationColumnIndex, "");
                         }
                     }
                     else
                     {
-                        _migration.Destination.WriteCell(destinationRow, columnparser.DestinationColumnIndex + 1,
-                            _migration.Source.ReadCell(cl.Value + columncaptionsindex, columnparser.SourceColumnIndex + 1));
+                        _migration.Destination.WriteCell(destinationRow, columnparser.DestinationColumnIndex,
+                            _migration.Source.ReadCell(cl.Value + columncaptionsindex, columnparser.SourceColumnIndex));
                     }
                 }
 
@@ -227,13 +254,13 @@ namespace WPFUIExcelDataCapture.Views
 
         private void FromSource2DestinationByRow(int destinationRow, KeyValuePair<string, int> cl, Dictionary<string, int> sourceKeys, bool permission)
         {
-            int columncaptionsindex = _migration.Destination.ColumnCaptionIndex;
+            int columncaptionsindex = _migration.Destination.ColumnCaptionRow;
             foreach (var columnparser in columnParsers)
             {
                 if ((columnparser.SourceColumnIndex == 0 && permission == true) || columnparser.SourceColumnIndex > 0)
                 {
-                    _migration.Destination.WriteCell(destinationRow, columnparser.DestinationColumnIndex + 1,
-                         _migration.Source.ReadCell(cl.Value + columncaptionsindex, columnparser.SourceColumnIndex + 1));
+                    _migration.Destination.WriteCell(destinationRow, columnparser.DestinationColumnIndex,
+                         _migration.Source.ReadCell(cl.Value + columncaptionsindex, columnparser.SourceColumnIndex));
                 }
 
                 if (columnparser.SourceColumnIndex == 0)
@@ -271,7 +298,7 @@ namespace WPFUIExcelDataCapture.Views
                     bool permission = true;
                     int row = 0;
 
-                    int columncaptionsindex = _migration.Destination.ColumnCaptionIndex;
+                    int columncaptionsindex = _migration.Destination.ColumnCaptionRow;
                     foreach (var cl in sortedSourceKeys)
                     {
                         if (cl.Key != string.Empty)
@@ -298,20 +325,20 @@ namespace WPFUIExcelDataCapture.Views
             }
         }
 
-        private int LastEmptyRow(NavisionExcel destination)
+        private int LastEmptyRow(AsposeExcel destination)
         {
-            return destination.Rows + 1;
+            return destination.RowsCount + 1;
         }
 
-        private Dictionary<string, int> LoadColumn(NavisionExcel source, int sourceColumnIndex)
+        private Dictionary<string, int> LoadColumn(AsposeExcel source, int sourceColumnIndex)
         {
             Dictionary<string, int> column = new Dictionary<string, int>();
             int emptykeyscounter = 0;
-            for(int i = 1;i < source.Rows; i++)
+            for(int i = 0;i < source.RowsCount; i++)
             {
-                var key = source.ReadCell(source.ColumnCaptionIndex + i, sourceColumnIndex + 1).ToLower();
+                var key = source.ReadCell(source.ColumnCaptionRow + 1 + i, sourceColumnIndex).ToLower();
                 if (!column.ContainsKey(key))
-                    column.Add(source.ReadCell(source.ColumnCaptionIndex + i, sourceColumnIndex + 1).ToLower(),i);
+                    column.Add(source.ReadCell(source.ColumnCaptionRow + 1 + i, sourceColumnIndex).ToLower(),i);
 
                 if (key == string.Empty)
                     emptykeyscounter++;
@@ -350,22 +377,15 @@ namespace WPFUIExcelDataCapture.Views
         {
             int max = columnParsers.Count;
             int zerocounter = 0;
-            int rowstartdest = _migration.Destination.ColumnCaptionIndex + 1;
-            int rowstartsource = _migration.Source.ColumnCaptionIndex + 1;
+            int rowstartdest = _migration.Destination.ColumnCaptionRow + 1;
+            int rowstartsource = _migration.Source.ColumnCaptionRow + 1;
             foreach (var col in columnParsers)
             {
-                /*
                 if ((col.SourceColumnIndex == 0 && zerocounter == 0) || col.SourceColumnIndex > 0)
                 {
-                    _migration.Destination.WriteRange(rowstartdest + 1, col.DestinationColumnIndex + 1,
-                        _migration.Source.ReadColumn(rowstartsource, _migration.Source.Rows, col.SourceColumnIndex + 1));
-                }*/
-
-                if ((col.SourceColumnIndex == 0 && zerocounter == 0) || col.SourceColumnIndex > 0)
-                {
-                    _migration.Source.CopyColumn2AnotherWorkbook(rowstartsource, col.SourceColumnIndex + 1,
-                        rowstartdest, col.DestinationColumnIndex + 1,
-                        _migration.Destination.ActiveWorksheet);
+                    _migration.Source.CopyRange2Worksheet(col.SourceColumnIndex,
+                        col.DestinationColumnIndex,
+                        _migration.Destination);
                 }
 
                 if (col.SourceColumnIndex == 0)
@@ -373,6 +393,72 @@ namespace WPFUIExcelDataCapture.Views
             }
             _migration.Destination.Save();
             _migration.Source.Save();
+        }
+
+        private void SaveTemplate_Click(object sender, RoutedEventArgs e)
+        {
+            var filePath = string.Empty;
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (_migration.Destination != null)
+                openFileDialog.InitialDirectory = _migration.Destination.FileDirectory;
+            else
+                openFileDialog.InitialDirectory = "C:\\";
+
+            openFileDialog.Filter = "Excel files (*.xlsx)|*.xlsm|All files (*.*)|*.*";
+            openFileDialog.FilterIndex = 2;
+            openFileDialog.RestoreDirectory = true;
+
+            Nullable<bool> result = openFileDialog.ShowDialog();
+
+            if (result == true)
+            {
+                filePath = openFileDialog.FileName;
+                Template = new AsposeExcel(filePath);
+                Write2Template();
+                Template.Save();
+                var msg = new MessageView("Template has been saved");
+                msg.Show();
+            }
+            else
+            {
+                var msg = new MessageView("Please choose some template file");
+                msg.Show();
+            }
+        }
+
+        private void Write2Template()
+        {
+            if (columnParsers.Count() > 0)
+            {
+                //initial cells
+                Template.WriteCell(0, 0, "Source:");
+                Template.WriteCell(0, 1, _migration.Source.FullPath);
+                Template.WriteCell(0, 2, _migration.Source.CurrentWorksheetName);
+                Template.WriteCell(1, 0, "Destination:");
+                Template.WriteCell(1, 1, _migration.Destination.FullPath);
+                Template.WriteCell(1, 2, _migration.Destination.CurrentWorksheetName);
+
+                //columns
+                Template.WriteCell(2, 0, "SourceColumn");
+                Template.WriteCell(2, 1, "SourceColumnIndex");
+                Template.WriteCell(2, 2, "DestinationColumn");
+                Template.WriteCell(2, 3, "DestinationColumnIndex");
+                Template.WriteCell(2, 4, "isKey");
+                Template.WriteCell(2, 5, "LookupMatch");
+
+                int row = 3;
+                foreach(var col in columnParsers)
+                {
+                    Template.WriteCell(row, 0, col.SourceColumnName);
+                    Template.WriteCell(row, 1, col.SourceColumnIndex);
+                    Template.WriteCell(row, 2, col.DestinationColumnName);
+                    Template.WriteCell(row, 3, col.DestinationColumnIndex);
+                    Template.WriteCell(row, 4, col.IsKey);
+                    Template.WriteCell(row, 5, col.LookupMatch);
+                    row++;
+                }
+            }
         }
     }
 }

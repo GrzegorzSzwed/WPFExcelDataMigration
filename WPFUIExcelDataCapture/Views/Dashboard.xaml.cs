@@ -33,10 +33,10 @@ namespace WPFUIExcelDataCapture
         private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
             if (migrationContainer.Destination != null)
-                migrationContainer.Destination.CloseAndSave();
+                migrationContainer.Destination.Save();
 
             if (migrationContainer.Source != null)
-                migrationContainer.Source.CloseAndSave();
+                migrationContainer.Source.Save();
 
             App.Current.Shutdown();
         }

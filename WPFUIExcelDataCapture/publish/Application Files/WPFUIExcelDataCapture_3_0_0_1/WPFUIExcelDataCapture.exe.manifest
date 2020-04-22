@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="WPFUIExcelDataCapture.exe" version="3.0.0.1" publicKeyToken="383ae7a42e9c25c6" language="neutral" processorArchitecture="msil" type="win32" />
+  <description asmv2:iconFile="icons8_merge_files_1.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="WPFUIExcelDataCapture" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="WPFUIExcelDataCapture.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC Manifest Options
+          If you want to change the Windows User Account Control level replace the
+          requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+         If you want to utilize File and Registry Virtualization for backward
+         compatibility then delete the requestedExecutionLevel node.
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Aspose.Cells.dll" size="13365016">
+      <assemblyIdentity name="Aspose.Cells" version="20.4.0.0" publicKeyToken="716FCC553A201E56" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>WNKxefAE5vntCKn7aYH+HMt325QVunR5f77jfjN93aA=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AsposeExcelDataCapture.dll" size="9216">
+      <assemblyIdentity name="AsposeExcelDataCapture" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>A4zcwbh33eVRfEPckq0nOdPLsemq+naSsW3BUN10CLE=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MaterialDesignColors.dll" size="299520">
+      <assemblyIdentity name="MaterialDesignColors" version="1.2.3.1244" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>69TIKA2Ha8DGHlm0uxe/+aBJo2H3LGjqzqUHDzBCMis=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MaterialDesignThemes.Wpf.dll" size="7237632">
+      <assemblyIdentity name="MaterialDesignThemes.Wpf" version="3.1.0.1244" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>jX45aHUSmbC9Xjcc8Gw6eB3mlhBAbFpkOluGTQk8xNc=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TextMathCalculation.dll" size="5632">
+      <assemblyIdentity name="TextMathCalculation" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>Ryk1OHalid0R2XgXyPF6a0a0Jv4SK53kinZN5G2CSgE=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WPFUIExcelDataCapture.exe" size="56320">
+      <assemblyIdentity name="WPFUIExcelDataCapture" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>K5u9Iq36XZubp8fRfZuapqLgO3pJDEJXGeVeHC4juJ4=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="icons8_merge_files_1.ico" size="5430">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WkibMO/Ozf3+zXMu3Hf7fACZ/JH3WlgEUiiMQYQoKIY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="WPFUIExcelDataCapture.exe.config" size="948">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>unoDSVhc7ETFvIMOIkWjQ7IyUIQpipJgTksz9Wktirw=</dsig:DigestValue>
+    </hash>
+  </file>
+<publisherIdentity name="CN=LAPEKS218-025\RWSwiss" issuerKeyHash="d1b106f989159e0ff021f82c515c13ea49c06ac9" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>kOBWagIRGFyI6W3LWb8236jlzo4lVj5zdP0RrNSkHqA=</DigestValue></Reference></SignedInfo><SignatureValue>agVb8mYJ7JbHNLAnHnbetb20XgndKxQias6VPKQmKSCD77fS6yQSno+r2bU1U+j5n8Y9ksOT7ECfyaOpZRhjjR2h+3Ojcq09lICDLfiWlQp/q4k1pH7n0xqJ+w2QklXQDAtlLKE5HCVC0m4W8maZEGgLSSFOztG1/QZAOqsx1eU=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>qRQ/9VhiU2I9Jc+iiZxlZ7S8p4gudgnVKkb+TeLxs4gHkUYvNRSLkiSnoQ6or9yHtNoKB0p+qB7JzV1nJane8e3EtN0NnZsfibJCZLbmX4RcdhvX2r+An8OsooKrWfNTskxYH08fjknrzNuJvy/wUBigUzQDakBT+o9IS8yyki0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="a01ea4d4ac11fd74733e56258ecee5a8df36bf59cb6de9885c1811026a56e090" Description="" Url=""><as:assemblyIdentity name="WPFUIExcelDataCapture.exe" version="3.0.0.1" publicKeyToken="383ae7a42e9c25c6" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=LAPEKS218-025\RWSwiss</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>oC2UKabpZgJKyevZKnNBbIweEyBj4BNtg2mvhT2ifRo=</DigestValue></Reference></SignedInfo><SignatureValue>E6Cg3ZFN7BAJNr7xLZ++K5C92u+mvIycoIVDy0wzLJbAYg/v9Su6A5XAZzZuLrkKQ0Zeqj/kXg2gXsahy1fsJ8wmB4qw3S7tfRXy0IgkwDNuedf0hjez53WmYFFz5CkrxZpDyCJCdFQfew8zvyqWAuRe/LOqKouN6BAUbH1Qlg0=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>qRQ/9VhiU2I9Jc+iiZxlZ7S8p4gudgnVKkb+TeLxs4gHkUYvNRSLkiSnoQ6or9yHtNoKB0p+qB7JzV1nJane8e3EtN0NnZsfibJCZLbmX4RcdhvX2r+An8OsooKrWfNTskxYH08fjknrzNuJvy/wUBigUzQDakBT+o9IS8yyki0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB7TCCAVagAwIBAgIQF01oQixrUbJBN2QcfoOkfzANBgkqhkiG9w0BAQsFADA1MTMwMQYDVQQDHioATABBAFAARQBLAFMAMgAxADgALQAwADIANQBcAFIAVwBTAHcAaQBzAHMwHhcNMjAwNDIxMDYzODA2WhcNMjEwNDIxMTIzODA2WjA1MTMwMQYDVQQDHioATABBAFAARQBLAFMAMgAxADgALQAwADIANQBcAFIAVwBTAHcAaQBzAHMwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAKkUP/VYYlNiPSXPoomcZWe0vKeILnYJ1SpG/k3i8bOIB5FGLzUUi5Ikp6EOqK/ch7TaCgdKfqgeyc1dZyWp3vHtxLTdDZ2bH4myQmS25l+EXHYb19q/gJ/DrKKCq1nzU7JMWB9PH45J68zbib8v8FAYoFM0A2pAU/qPSEvMspItAgMBAAEwDQYJKoZIhvcNAQELBQADgYEABCYpuIHsZotI10W2Vkn+PyNcosfMsI0nltKVcKMLvuEveReHnnKBFsGS8bJADkaezlT7JFhWATYJ1jaZoRhwsk36fxPthH513uGpyEzOyS20l4udo8rv1GN5Rgk+ZMNY83FCkEMdemLLb1UgI895TEhDMfdJD3V8ulKOhcWcll0=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>

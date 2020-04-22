@@ -68,6 +68,16 @@
                         <TextBlock x:Name="txtSimililarityPercent" VerticalAlignment="Center" Width="auto" Margin="5 0 5 0" FontWeight="UltraBlack"/>
                     </StackPanel>
                 </ListViewItem>
+                <ListViewItem>
+                    <StackPanel Grid.Row="2" Grid.Column="3" Margin="5 0 5 0" Orientation="Horizontal">
+                        <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" BorderBrush="{x:Null}" 
+                        x:Name="LoadTemplate" Width="40" Height="40" Background="White" Click="LoadTemplate_Click">
+                            <materialDesign:PackIcon Kind="Upload" Width="25" Height="25" Foreground="#A5C28E"/>
+                        </Button>
+                        <TextBlock Text="Load available template" VerticalAlignment="Center" Margin="20 0 10 0"/>
+                    </StackPanel>
+                </ListViewItem>
+                
             </ListView>
         </StackPanel>
     </Grid>

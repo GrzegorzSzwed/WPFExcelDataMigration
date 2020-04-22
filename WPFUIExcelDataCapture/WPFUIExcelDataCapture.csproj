@@ -27,8 +27,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>3</ApplicationRevision>
-    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>3.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -170,9 +170,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ExcelDataCapture\ExcelDataCapture.csproj">
-      <Project>{5aa2c339-7967-4ffc-bf5d-a02a3ca6bdf1}</Project>
-      <Name>ExcelDataCapture</Name>
+    <ProjectReference Include="..\AsposeExcelDataCapture\AsposeExcelDataCapture.csproj">
+      <Project>{8122da4b-4b18-43f8-b0dd-1d5802f8ac87}</Project>
+      <Name>AsposeExcelDataCapture</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMathCalculation\TextMatchCalculation.csproj">
       <Project>{deff5446-8976-405e-a9db-dae9820b0871}</Project>

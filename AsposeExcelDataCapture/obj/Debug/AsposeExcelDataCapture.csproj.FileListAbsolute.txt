@@ -1,0 +1,9 @@
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\AsposeExcelDataCapture\bin\Debug\AsposeExcelDataCapture.dll
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\AsposeExcelDataCapture\bin\Debug\AsposeExcelDataCapture.pdb
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\AsposeExcelDataCapture\bin\Debug\Aspose.Cells.dll
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\AsposeExcelDataCapture\bin\Debug\Aspose.Cells.xml
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\AsposeExcelDataCapture\obj\Debug\AsposeExcelDataCapture.csprojAssemblyReference.cache
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\AsposeExcelDataCapture\obj\Debug\AsposeExcelDataCapture.csproj.CoreCompileInputs.cache
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\AsposeExcelDataCapture\obj\Debug\AsposeExcelDataCapture.csproj.CopyComplete
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\AsposeExcelDataCapture\obj\Debug\AsposeExcelDataCapture.dll
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\AsposeExcelDataCapture\obj\Debug\AsposeExcelDataCapture.pdb

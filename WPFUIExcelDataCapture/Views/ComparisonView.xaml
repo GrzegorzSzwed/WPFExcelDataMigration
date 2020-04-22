@@ -39,14 +39,24 @@
             <CheckBox x:Name="MergeByMatch" Visibility="Hidden" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <TextBlock Text="Merge By Match" Visibility="Hidden" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
-            <StackPanel Grid.Row="0" Grid.Column="4" Margin="5 0 5 0" Grid.RowSpan="4" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Grid.Row="0" Grid.Column="4" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" BorderBrush="{x:Null}" 
-                        Width="50" Height="50" Background="White" 
+
+            <StackPanel Grid.Row="0" Grid.Column="3" Margin="5 5 5 5" Orientation="Horizontal" Grid.RowSpan="2">
+                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" BorderBrush="{x:Null}" 
+                        x:Name="SaveTemplate" Width="40" Height="40" Background="White" Click="SaveTemplate_Click">
+                    <materialDesign:PackIcon Kind="ContentSaveSettings" Width="25" Height="25" Foreground="#A5C28E"/>
+                </Button>
+                <TextBlock Text="Save as template" VerticalAlignment="Center" Margin="20 0 10 0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Grid.Column="3" Margin="5 5 5 5" Grid.RowSpan="2" Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" BorderBrush="{x:Null}" 
+                        Width="40" Height="40" Background="#522121" 
                         x:Name="btnMerge" Click="BtnMerge_Click">
                     <materialDesign:PackIcon Kind="Merge" Width="30" Height="30" Foreground="#A5C28E"/>
                 </Button>
+                <TextBlock Text="Call Merge" VerticalAlignment="Center" Margin="20 0 10 0"/>
             </StackPanel>
-            
+
         </Grid>
         <Grid Grid.Row="1">
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">

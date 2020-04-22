@@ -17,11 +17,10 @@ namespace AsposeExcelDataCapture
         private string _fileName;
         private string _extension;
         private string _fileDirectory;
-        private List<string> _columnCaptions;
         private Dictionary<string,int> _columnCaptionsWithIndex;
         private int _columnsCount;
         private int _rowsCount;
-        public int ColumnCaptionRow = 3;
+        public int ColumnCaptionRow = 2;
 
         public int RowsCount
         {
@@ -44,8 +43,7 @@ namespace AsposeExcelDataCapture
 
         public List<string> ColumnCaptionList
         {
-            get { return _columnCaptions; }
-            set { _columnCaptions = value; }
+            get { return ColumnCaptionsWithIndexDictionary.Keys.ToList(); }
         }
 
 
@@ -83,13 +81,42 @@ namespace AsposeExcelDataCapture
         public Worksheet CurrentWorksheet
         {
             get { return _worksheet; }
-            set { _worksheet = value; }
+            set {
+                _worksheet = value;
+                CountRowAndColumns();
+                LoadColumnsCaptionWithIndexesDictionary();
+            }
         }
 
         public Workbook CurrentWorkbook
         {
             get { return _workbook; }
             set { _workbook = value; }
+        }
+
+        public string CurrentWorksheetName
+        {
+            get
+            {
+                return CurrentWorksheet.Name.ToString();
+            }
+        }
+
+        public bool ChangeWorksheet(string name)
+        {
+            var ws = from el in CurrentWorkbook.Worksheets
+                     where el.Name == name
+                     select el;
+
+            if(ws.Count()==1)
+            {
+                CurrentWorksheet = CurrentWorkbook.Worksheets[name];
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public AsposeExcel(string fullpath)
@@ -99,8 +126,6 @@ namespace AsposeExcelDataCapture
                 FullPath = fullpath;
                 CurrentWorkbook = new Workbook(fullpath);
                 CurrentWorksheet = CurrentWorkbook.Worksheets[0];
-                CountRowAndColumns();
-                LoadColumnsCaptionWithIndexesDictionary();
             }
             else
             {
@@ -113,19 +138,25 @@ namespace AsposeExcelDataCapture
             _columnCaptionsWithIndex = new Dictionary<string, int>();
             for (int i = 0; i < ColumnsCount; i++)
             {
-                _columnCaptionsWithIndex.Add(CurrentWorksheet.Cells.GetCell(ColumnCaptionRow, i).Value.ToString(),i);
+                string str = CurrentWorksheet.Cells.GetCell(ColumnCaptionRow, i).Value.ToString();
+                if (!_columnCaptionsWithIndex.ContainsKey(str))
+                    _columnCaptionsWithIndex.Add(str, i);
+                else
+                {
+                    _columnCaptionsWithIndex.Add(str + "E", i);
+                }
             }
         }
 
         private void CountRowAndColumns()
         {
-            ColumnsCount = CurrentWorksheet.Cells.MaxDataColumn;
-            RowsCount = CurrentWorksheet.Cells.MaxDataRow;
+            ColumnsCount = CurrentWorksheet.Cells.MaxDataColumn + 1;
+            RowsCount = CurrentWorksheet.Cells.MaxDataRow + 1;
         }
 
         public string ReadCell(int row, int column)
         {
-            if(row > 0 && column > 0)
+            if(row >= 0 && column >= 0)
             {
                 try
                 {
@@ -144,9 +175,35 @@ namespace AsposeExcelDataCapture
 
         public void WriteCell(int row, int column, string str)
         {
-            if (row > 0 && column > 0 && str != string.Empty)
+            if (row >= 0 && column >= 0 && str != string.Empty)
             {
-                CurrentWorksheet.Cells.GetCell(row, column).PutValue(str);
+                CurrentWorksheet.Cells[row, column].PutValue(str);
+                CurrentWorksheet.AutoFitColumn(column);
+            }
+            else
+            {
+                throw new IndexOutOfRangeException();
+            }
+        }
+        public void WriteCell(int row, int column, int i)
+        {
+            if (row >= 0 && column >= 0)
+            {
+                CurrentWorksheet.Cells[row, column].PutValue(i);
+                CurrentWorksheet.AutoFitColumn(column);
+            }
+            else
+            {
+                throw new IndexOutOfRangeException();
+            }
+        }
+
+        public void WriteCell(int row, int column, bool i)
+        {
+            if (row >= 0 && column >= 0)
+            {
+                CurrentWorksheet.Cells[row, column].PutValue(i);
+                CurrentWorksheet.AutoFitColumn(column);
             }
             else
             {
@@ -160,6 +217,21 @@ namespace AsposeExcelDataCapture
                 sourceColumnIndex, destinationColumnIndex);
 
             destinationExcel.CurrentWorksheet.AutoFitColumn(destinationColumnIndex);
+        }
+
+        public void Save()
+        {
+            CurrentWorkbook.Save(FullPath);
+        }
+
+        public List<string> ListOfWorksheets()
+        {
+            List<string> list = new List<string>();
+            foreach(Worksheet worksheet in CurrentWorkbook.Worksheets)
+            {
+                list.Add(worksheet.Name.ToString());
+            }
+            return list;
         }
     }
 
