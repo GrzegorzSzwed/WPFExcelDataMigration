@@ -1,0 +1,5 @@
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\TextMathCalculation\bin\Debug\TextMathCalculation.dll
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\TextMathCalculation\bin\Debug\TextMathCalculation.pdb
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\TextMathCalculation\obj\Debug\TextMatchCalculation.csproj.CoreCompileInputs.cache
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\TextMathCalculation\obj\Debug\TextMathCalculation.dll
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\TextMathCalculation\obj\Debug\TextMathCalculation.pdb

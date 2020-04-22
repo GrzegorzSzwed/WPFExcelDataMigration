@@ -1,0 +1,50 @@
+﻿<Window x:Class="WPFUIExcelDataCapture.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:WPFUIExcelDataCapture"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="1000" 
+        ResizeMode="NoResize" WindowStyle="None" 
+        WindowStartupLocation="CenterScreen" FontFamily="Segoe UI Symbol">
+    <Grid Background="#FFFFFF" MouseDown="Grid_MouseDown">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Background="#3A5321"/>
+        <Grid Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" Background="#9BC371"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Height="40" VerticalAlignment="Top">
+            <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" BorderBrush="{x:Null}" Width="25" Height="25" Margin="5,8,5,0" Background="#9BC371" 
+                    x:Name="BtnExit" VerticalAlignment="Top" Click="BtnExit_Click">
+                <materialDesign:PackIcon Kind="ExitToApp" Width="15" Height="15" Foreground="White"/>
+            </Button>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Width="auto"  Background="#9BC371" HorizontalAlignment="Left">
+            <StackPanel Orientation="Horizontal" Height="50" Margin="5 0 0 25" HorizontalAlignment="Left">
+                <Button x:Name="btnHome" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        Background="{x:Null}" BorderBrush="{x:Null}" Click="BtnHome_Click">
+                    <materialDesign:PackIcon Kind="Home" Width="30" Height="30" Foreground="White"/>
+                </Button>
+                <Button x:Name="btnData" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        Background="{x:Null}" BorderBrush="{x:Null}" Click="BtnData_Click">
+                    <materialDesign:PackIcon Kind="DatabaseImport" Width="30" Height="30" Foreground="White"/>
+                </Button>
+                <Button x:Name="btnSettings" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        Background="{x:Null}" BorderBrush="{x:Null}" Click="BtnSettings_Click">
+                    <materialDesign:PackIcon Kind="Settings" Width="30" Height="30" Foreground="White"/>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+        <ContentControl x:Name="DashboardContent" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" Width="850"/>
+    </Grid>
+</Window>

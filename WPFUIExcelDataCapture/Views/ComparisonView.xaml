@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="WPFUIExcelDataCapture.Views.ComparisonView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFUIExcelDataCapture.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="750" d:DesignWidth="800" FontFamily="Segoe UI Symbol" 
+             Background="White" FontSize="12" Foreground="#272E22">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="160"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="#A5C28E">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="25"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <CheckBox x:Name="Overwrite" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <TextBlock Text="Overwrite" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+            <CheckBox x:Name="Merge"  Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <TextBlock Text="Merge"  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+      
+            <CheckBox x:Name="MergeWithRelation" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <TextBlock Text="Merge and Check Relations" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+            <CheckBox x:Name="MergeByMatch" Visibility="Hidden" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <TextBlock Text="Merge By Match" Visibility="Hidden" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+            <StackPanel Grid.Row="0" Grid.Column="4" Margin="5 0 5 0" Grid.RowSpan="4" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Grid.Row="0" Grid.Column="4" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" BorderBrush="{x:Null}" 
+                        Width="50" Height="50" Background="White" 
+                        x:Name="btnMerge" Click="BtnMerge_Click">
+                    <materialDesign:PackIcon Kind="Merge" Width="30" Height="30" Foreground="#A5C28E"/>
+                </Button>
+            </StackPanel>
+            
+        </Grid>
+        <Grid Grid.Row="1">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="itemsListColumnParsers">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Background="#C8DAB9" Margin="0 0 0 5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="75"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="5"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="1" Text="Source" Foreground="Black" VerticalAlignment="Center" Margin="5 0 5 0"/>
+                                <ComboBox Grid.Column="2" ItemsSource="{Binding SourceColumnCaptionList}" Margin="5 0 5 0" SelectedIndex="{Binding SourceColumnIndex}" VerticalAlignment="Center" SelectionChanged="CmbSource_SelectionChanged"/>
+                                <TextBlock Grid.Column="3" Text="{Binding SourceColumnIndex}" Margin="5 0 5 0" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="4" Text="Destination" VerticalAlignment="Center" Margin="5 0 5 0"/>
+                                <ComboBox Grid.Column="5" ItemsSource="{Binding DestinationColumnCaptionList}" Margin="5 0 5 0" SelectedIndex="{Binding DestinationColumnIndex}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="6" Text="{Binding DestinationColumnIndex}" Margin="5 0 5 0" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Column="7" Tag="{Binding IsKey}" IsChecked="{Binding IsKey}" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Column="8" Tag="{Binding LookupMatch}" IsChecked="{Binding LookupMatch}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

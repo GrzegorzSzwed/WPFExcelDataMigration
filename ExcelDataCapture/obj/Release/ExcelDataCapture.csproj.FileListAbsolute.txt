@@ -1,0 +1,6 @@
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\ExcelDataCapture\bin\Release\ExcelDataCapture.dll
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\ExcelDataCapture\bin\Release\ExcelDataCapture.pdb
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\ExcelDataCapture\obj\Release\ExcelDataCapture.csproj.CoreCompileInputs.cache
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\ExcelDataCapture\obj\Release\ExcelDataCapture.dll
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\ExcelDataCapture\obj\Release\ExcelDataCapture.pdb
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\ExcelDataCapture\obj\Release\ExcelDataCapture.csprojAssemblyReference.cache
