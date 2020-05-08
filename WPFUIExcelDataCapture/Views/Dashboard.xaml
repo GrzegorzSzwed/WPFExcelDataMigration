@@ -11,40 +11,40 @@
         WindowStartupLocation="CenterScreen" FontFamily="Segoe UI Symbol">
     <Grid Background="#FFFFFF" MouseDown="Grid_MouseDown">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="2"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="2"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="2"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="2"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Background="#3A5321"/>
-        <Grid Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" Background="#9BC371"/>
-        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Height="40" VerticalAlignment="Top">
-            <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" BorderBrush="{x:Null}" Width="25" Height="25" Margin="5,8,5,0" Background="#9BC371" 
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Background="#9514E6"/>
+        <Grid Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="4" Background="#9514E6"/>
+        <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Background="#9514E6"/>
+        <Grid Grid.Row="0" Grid.Column="3" Grid.RowSpan="3" Background="#9514E6"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" BorderBrush="{x:Null}" Margin="5 5 5 5" Background="#406309" 
                     x:Name="BtnExit" VerticalAlignment="Top" Click="BtnExit_Click">
-                <materialDesign:PackIcon Kind="ExitToApp" Width="15" Height="15" Foreground="White"/>
+                <materialDesign:PackIcon Kind="ExitToApp" Width="30" Height="30" Foreground="White"/>
             </Button>
         </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Width="auto"  Background="#9BC371" HorizontalAlignment="Left">
-            <StackPanel Orientation="Horizontal" Height="50" Margin="5 0 0 25" HorizontalAlignment="Left">
-                <Button x:Name="btnHome" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
-                        Background="{x:Null}" BorderBrush="{x:Null}" Click="BtnHome_Click">
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Width="auto" Margin="5 5 5 5">
+            <Button x:Name="btnHome" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        Background="#406309" BorderBrush="{x:Null}" Click="BtnHome_Click" Margin="5 0 5 0">
                     <materialDesign:PackIcon Kind="Home" Width="30" Height="30" Foreground="White"/>
-                </Button>
-                <Button x:Name="btnData" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
-                        Background="{x:Null}" BorderBrush="{x:Null}" Click="BtnData_Click">
+            </Button>    
+            <Button x:Name="btnData" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        Background="#406309" BorderBrush="{x:Null}" Click="BtnData_Click" Margin="5 0 5 0">
                     <materialDesign:PackIcon Kind="DatabaseImport" Width="30" Height="30" Foreground="White"/>
-                </Button>
-                <Button x:Name="btnSettings" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
-                        Background="{x:Null}" BorderBrush="{x:Null}" Click="BtnSettings_Click">
-                    <materialDesign:PackIcon Kind="Settings" Width="30" Height="30" Foreground="White"/>
-                </Button>
-            </StackPanel>
+            </Button>
+            <Button x:Name="btnSettings" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        Background="#406309" BorderBrush="{x:Null}" Click="BtnSettings_Click" Margin="5 0 5 0">
+                <materialDesign:PackIcon Kind="Settings" Width="30" Height="30" Foreground="White"/>
+            </Button>
         </StackPanel>
-        <ContentControl x:Name="DashboardContent" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" Width="850"/>
+        <ContentControl x:Name="DashboardContent" Grid.Column="1" Grid.Row="2"/>
     </Grid>
 </Window>

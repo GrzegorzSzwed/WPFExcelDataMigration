@@ -29,21 +29,19 @@ namespace WPFUIExcelDataCapture.Views
         public string DestinationCurrentWorksheet;
         public string SourceCurrentWorksheet;
         private AsposeExcel _templateExcel;
-
-        public AsposeExcel Template
-        {
-            get { return _templateExcel; }
-            set { _templateExcel = value; }
-        }
-
+        private List<string> MergeActions = new List<string>();
 
         public ComparisonView(MigrationContainer migration)
         {
             InitializeComponent();
             _migration = migration;
-            MergeByMatch.IsChecked = false;
-            Merge.IsChecked = false;
-            Overwrite.IsChecked = true;
+            MergeActions.Add("Overwrite");
+            MergeActions.Add("Merge By Key");
+            MergeActions.Add("Merge With Text Match");
+            MergeActions.Add("Merge And Check Relation");
+            MergeActions.Add("Add 2 Worksheet");
+
+            cmbMergeOption.ItemsSource = MergeActions;
 
             if(_migration.Source != null && _migration.Destination != null)
             {
@@ -56,85 +54,9 @@ namespace WPFUIExcelDataCapture.Views
             }
         }
 
-        private void LoadComparisonView()
-        {
-            if (!_migration.TemplateAttached)
-            {
-                if (_migration.Destination != null)
-                {
-                    var captionsWithIndex = _migration.Destination.ColumnCaptionsWithIndexDictionary;
-                    foreach (var col in captionsWithIndex)
-                    {
-                        ColumnParser parser = new ColumnParser();
-                        parser.DestinationColumnName = col.Key;
-                        parser.DestinationColumnIndex = col.Value;
-                        parser.DestinationColumnCaptionList = _migration.Destination.ColumnCaptionList;
-                        parser.SourceColumnCaptionList = _migration.Source.ColumnCaptionList;
-                        FillSourceIfFoundDestination(parser, col.Key);
-
-                        columnParsers.Add(parser);
-                    }
-                    itemsListColumnParsers.ItemsSource = columnParsers;
-                }
-            }
-            else
-            {
-                if (_migration.Destination != null)
-                {
-                    foreach (var parser in _migration.ColumnParsers)
-                    {
-                        parser.DestinationColumnCaptionList = _migration.Destination.ColumnCaptionList;
-                        parser.SourceColumnCaptionList = _migration.Source.ColumnCaptionList;
-
-                        columnParsers.Add(parser);
-                    }
-                    itemsListColumnParsers.ItemsSource = columnParsers;
-                }
-            }
-            
-        }
-
-        public void FillSourceIfFoundDestination(ColumnParser parser, string caption)
-        {
-            if(_migration.Source.ColumnCaptionsWithIndexDictionary.ContainsKey(caption))
-            {
-                parser.SourceColumnName = caption;
-                parser.SourceColumnIndex = _migration.Source.ColumnCaptionsWithIndexDictionary[caption];
-            }
-            else
-            {
-                if (_migration.Source.ColumnCaptionsWithIndexDictionary.ContainsKey(caption))
-                {
-                    parser.SourceColumnName = caption;
-                    parser.SourceColumnIndex = _migration.Source.ColumnCaptionsWithIndexDictionary[caption.ToLower()];
-                }
-                else
-                {
-                    string highest = string.Empty;
-                    int memory = 0;
-                    foreach (var par in _migration.Source.ColumnCaptionList)
-                    {
-                        int distance = Levenstein.NettoDistance(par, caption);
-                        if (distance < memory)
-                        {
-                            highest = par;
-                            memory = distance;
-                        }
-                    }
-
-                    if (memory <= 3)
-                    {
-                        parser.SourceColumnName = highest;
-                        parser.SourceColumnIndex = _migration.Source.ColumnCaptionsWithIndexDictionary[highest];
-                    }
-                }
-            }
-        }
-
         private void CmbSource_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox cmb = sender as ComboBox;
-
         }
 
         private void BtnMerge_Click(object sender, RoutedEventArgs e)
@@ -143,19 +65,29 @@ namespace WPFUIExcelDataCapture.Views
             {
                 if(_migration.Destination != null && _migration.Source != null)
                 {
-                    if (Overwrite.IsChecked == true)
+                    if (cmbMergeOption.Text == "Overwrite")
                     {
                         OverwriteDestinationBySource();
                     }
 
-                    if (Merge.IsChecked == true)
+                    if (cmbMergeOption.Text == "Merge By Key")
                     {
                         MergeDestinationWithSource();
                     }
 
-                    if(MergeWithRelation.IsChecked == true)
+                    if(cmbMergeOption.Text == "Merge And Check Relation")
                     {
                         MergeAndCheckRelations();
+                    }
+
+                    if(cmbMergeOption.Text == "Merge With Text Match")
+                    {
+                        MergeCheckTextMatch();
+                    }
+
+                    if(cmbMergeOption.Text == "Add 2 Worksheet")
+                    {
+                        Add2Worksheet();
                     }
                 }
                 else
@@ -166,9 +98,97 @@ namespace WPFUIExcelDataCapture.Views
             }
         }
 
+        #region MergeCheckTextMatch
+        private void MergeCheckTextMatch()
+        {
+            if (IsSecondKeyChecked() && IsKeyChecked())
+            {
+                var keycolumn = from el in columnParsers
+                                where el.IsKey == true
+                                select el;
+
+                var matchcolumn = from el in columnParsers
+                                  where el.LookupMatch == true
+                                  select el;
+
+                if (keycolumn.Count() != 1 || matchcolumn.Count() != 1)
+                {
+                    var msg = new MessageView("You cannot specify more than one first key!");
+                    msg.Show();
+                }
+                else
+                {
+                    var keycol = keycolumn.FirstOrDefault();
+                    var matchcol = matchcolumn.FirstOrDefault();
+
+                    Dictionary<string, int> sourceKeys = new Dictionary<string, int>();
+                    Dictionary<string, int> destinationKeys = new Dictionary<string, int>();
+
+                    sourceKeys = LoadColumn(_migration.Source, keycol.SourceColumnIndex);
+                    destinationKeys = LoadColumn(_migration.Destination, keycol.DestinationColumnIndex);
+                    SortedDictionary<string, int> sortedSourceKeys = new SortedDictionary<string, int>(sourceKeys);
+
+                    Dictionary<string, int> sourceNames = new Dictionary<string, int>();
+                    Dictionary<string, int> destinationNames = new Dictionary<string, int>();
+
+                    sourceNames = LoadColumn(_migration.Source, matchcol.SourceColumnIndex);
+                    destinationNames = LoadColumn(_migration.Destination, matchcol.DestinationColumnIndex);
+
+                    int ifNotFoundKeyRow = LastEmptyRow(_migration.Destination);
+                    bool permission = true;
+                    int row = 0;
+
+                    int columncaptionsindex = _migration.Destination.ColumnCaptionRow;
+                    foreach (var cl in sortedSourceKeys)
+                    {
+                        if (cl.Key != string.Empty)
+                        {
+                            if (destinationKeys.ContainsKey(cl.Key))
+                            {
+                                row = destinationKeys[cl.Key] + columncaptionsindex;
+                                int rowsource = sourceKeys[cl.Key] + columncaptionsindex;
+                                decimal percent = Levenstein.Percent(
+                                    _migration.Source.ReadCell(rowsource, matchcol.SourceColumnIndex),
+                                    _migration.Destination.ReadCell(row, matchcol.DestinationColumnIndex)
+                                    );
+
+                                if(percent < 80)
+                                {
+                                    var elements = from el in destinationNames
+                                                   where Levenstein.NettoDistance(cl.Key, el.Key) <= 3 && el.Key != string.Empty
+                                                   select el;
+
+                                    if (elements.Count() > 0)
+                                    {
+                                        KeyValuePair<string, int> result = new KeyValuePair<string, int>();
+                                        var comp = new SimilarNames(elements, result);
+                                        comp.ShowDialog();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                row = ifNotFoundKeyRow++;
+                            }
+
+                            FromSource2DestinationWithRelationByRow(row,
+                                                   cl,
+                                                   sourceKeys,
+                                                   permission);
+                        }
+                    }
+
+                    _migration.Destination.Save();
+                    _migration.Source.Save();
+                }
+            }
+        }
+        #endregion
+
+        #region MergeByKeyWithRelation
+
         private void MergeAndCheckRelations()
         {
-            int columnparserscount = columnParsers.Count;
             if (IsSecondKeyChecked() && IsKeyChecked())
             {
                 var keycolumn = from el in columnParsers
@@ -252,22 +272,9 @@ namespace WPFUIExcelDataCapture.Views
             }
         }
 
-        private void FromSource2DestinationByRow(int destinationRow, KeyValuePair<string, int> cl, Dictionary<string, int> sourceKeys, bool permission)
-        {
-            int columncaptionsindex = _migration.Destination.ColumnCaptionRow;
-            foreach (var columnparser in columnParsers)
-            {
-                if ((columnparser.SourceColumnIndex == 0 && permission == true) || columnparser.SourceColumnIndex > 0)
-                {
-                    _migration.Destination.WriteCell(destinationRow, columnparser.DestinationColumnIndex,
-                         _migration.Source.ReadCell(cl.Value + columncaptionsindex, columnparser.SourceColumnIndex));
-                }
+        #endregion
 
-                if (columnparser.SourceColumnIndex == 0)
-                    permission = false; ;
-            }
-        }
-
+        #region MergeByKey
         private void MergeDestinationWithSource()
         {
             int columnparserscount = columnParsers.Count;
@@ -325,6 +332,158 @@ namespace WPFUIExcelDataCapture.Views
             }
         }
 
+        private void FromSource2DestinationByRow(int destinationRow, KeyValuePair<string, int> cl, Dictionary<string, int> sourceKeys, bool permission)
+        {
+            int columncaptionsindex = _migration.Destination.ColumnCaptionRow;
+            foreach (var columnparser in columnParsers)
+            {
+                if ((columnparser.SourceColumnIndex == 0 && permission == true) || columnparser.SourceColumnIndex > 0)
+                {
+                    _migration.Destination.WriteCell(destinationRow, columnparser.DestinationColumnIndex,
+                         _migration.Source.ReadCell(cl.Value + columncaptionsindex, columnparser.SourceColumnIndex));
+                }
+
+                if (columnparser.SourceColumnIndex == 0)
+                    permission = false; ;
+            }
+        }
+
+        #endregion
+
+        #region Overwrite
+
+        private void OverwriteDestinationBySource()
+        {
+            int max = columnParsers.Count;
+            int zerocounter = 0;
+            int rowstartdest = _migration.Destination.ColumnCaptionRow + 1;
+            int rowstartsource = _migration.Source.ColumnCaptionRow + 1;
+            foreach (var col in columnParsers)
+            {
+                if ((col.SourceColumnIndex == 0 && zerocounter == 0) || col.SourceColumnIndex > 0)
+                {
+                    _migration.Source.CopyRange2Worksheet(col.SourceColumnIndex,
+                        col.DestinationColumnIndex,
+                        _migration.Destination);
+                }
+
+                if (col.SourceColumnIndex == 0)
+                    zerocounter++;
+            }
+            _migration.Destination.Save();
+            _migration.Source.Save();
+        }
+
+        #endregion
+
+        #region Add2Worksheet
+
+        private void Add2Worksheet()
+        {
+            int max = columnParsers.Count;
+            int zerocounter = 0;
+            int ifNotFoundKeyRow = LastEmptyRow(_migration.Destination);
+            int row = _migration.Source.ColumnCaptionRow + 1;
+
+            foreach (var col in columnParsers)
+            {
+                if ((col.SourceColumnIndex == 0 && zerocounter == 0) || col.SourceColumnIndex > 0)
+                {
+                    var SouceValue = _migration.Source.ReadCell(row++, col.SourceColumnIndex);
+                    _migration.Destination.WriteCell(ifNotFoundKeyRow++, col.DestinationColumnIndex,
+                            SouceValue);
+                }
+
+                if (col.SourceColumnIndex == 0)
+                    zerocounter++;
+            }
+            _migration.Destination.Save();
+            _migration.Source.Save();
+        }
+
+        #endregion
+
+        #region Methods
+        private void LoadComparisonView()
+        {
+            if (!_migration.TemplateAttached)
+            {
+                if (_migration.Destination != null)
+                {
+                    var captionsWithIndex = _migration.Destination.ColumnCaptionsWithIndexDictionary;
+                    foreach (var col in captionsWithIndex)
+                    {
+                        ColumnParser parser = new ColumnParser();
+                        parser.DestinationColumnName = col.Key;
+                        parser.DestinationColumnIndex = col.Value;
+                        parser.DestinationColumnCaptionList = _migration.Destination.ColumnCaptionList;
+                        parser.SourceColumnCaptionList = _migration.Source.ColumnCaptionList;
+                        FillSourceIfFoundDestination(parser, col.Key);
+
+                        columnParsers.Add(parser);
+                    }
+                    itemsListColumnParsers.ItemsSource = columnParsers;
+                }
+            }
+            else
+            {
+                if (_migration.Destination != null)
+                {
+                    foreach (var parser in _migration.ColumnParsers)
+                    {
+                        parser.DestinationColumnCaptionList = _migration.Destination.ColumnCaptionList;
+                        parser.SourceColumnCaptionList = _migration.Source.ColumnCaptionList;
+
+                        columnParsers.Add(parser);
+                    }
+                    itemsListColumnParsers.ItemsSource = columnParsers;
+                }
+            }
+
+        }
+
+        public void FillSourceIfFoundDestination(ColumnParser parser, string caption)
+        {
+            if (_migration.Source.ColumnCaptionsWithIndexDictionary.ContainsKey(caption))
+            {
+                parser.SourceColumnName = caption;
+                parser.SourceColumnIndex = _migration.Source.ColumnCaptionsWithIndexDictionary[caption];
+            }
+            else
+            {
+                if (_migration.Source.ColumnCaptionsWithIndexDictionary.ContainsKey(caption))
+                {
+                    parser.SourceColumnName = caption;
+                    parser.SourceColumnIndex = _migration.Source.ColumnCaptionsWithIndexDictionary[caption.ToLower()];
+                }
+                else
+                {
+                    string highest = string.Empty;
+                    int memory = 100;
+                    foreach (var par in _migration.Source.ColumnCaptionList)
+                    {
+                        int distance = Levenstein.NettoDistance(par, caption);
+                        if (distance < memory)
+                        {
+                            highest = par;
+                            memory = distance;
+                        }
+                    }
+
+                    if (memory <= 3)
+                    {
+                        parser.SourceColumnName = highest;
+                        parser.SourceColumnIndex = _migration.Source.ColumnCaptionsWithIndexDictionary[highest];
+                    }
+                    else
+                    {
+                        var s = _migration.Source.ColumnCaptionsWithIndexDictionary.First();
+                        parser.SourceColumnName = s.Key;
+                        parser.SourceColumnIndex = s.Value;
+                    }
+                }
+            }
+        }
         private int LastEmptyRow(AsposeExcel destination)
         {
             return destination.RowsCount + 1;
@@ -334,11 +493,11 @@ namespace WPFUIExcelDataCapture.Views
         {
             Dictionary<string, int> column = new Dictionary<string, int>();
             int emptykeyscounter = 0;
-            for(int i = 0;i < source.RowsCount; i++)
+            for (int i = 0; i < source.RowsCount; i++)
             {
                 var key = source.ReadCell(source.ColumnCaptionRow + 1 + i, sourceColumnIndex).ToLower();
                 if (!column.ContainsKey(key))
-                    column.Add(source.ReadCell(source.ColumnCaptionRow + 1 + i, sourceColumnIndex).ToLower(),i);
+                    column.Add(source.ReadCell(source.ColumnCaptionRow + 1 + i, sourceColumnIndex).ToLower(), i);
 
                 if (key == string.Empty)
                     emptykeyscounter++;
@@ -372,29 +531,9 @@ namespace WPFUIExcelDataCapture.Views
             else
                 return false;
         }
+        #endregion
 
-        private void OverwriteDestinationBySource()
-        {
-            int max = columnParsers.Count;
-            int zerocounter = 0;
-            int rowstartdest = _migration.Destination.ColumnCaptionRow + 1;
-            int rowstartsource = _migration.Source.ColumnCaptionRow + 1;
-            foreach (var col in columnParsers)
-            {
-                if ((col.SourceColumnIndex == 0 && zerocounter == 0) || col.SourceColumnIndex > 0)
-                {
-                    _migration.Source.CopyRange2Worksheet(col.SourceColumnIndex,
-                        col.DestinationColumnIndex,
-                        _migration.Destination);
-                }
-
-                if (col.SourceColumnIndex == 0)
-                    zerocounter++;
-            }
-            _migration.Destination.Save();
-            _migration.Source.Save();
-        }
-
+        #region SaveTemplate
         private void SaveTemplate_Click(object sender, RoutedEventArgs e)
         {
             var filePath = string.Empty;
@@ -459,6 +598,20 @@ namespace WPFUIExcelDataCapture.Views
                     row++;
                 }
             }
+        }
+#endregion
+
+        #region Properties
+        public AsposeExcel Template
+        {
+            get { return _templateExcel; }
+            set { _templateExcel = value; }
+        }
+        #endregion
+
+        private void ListViewItem_Selected(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

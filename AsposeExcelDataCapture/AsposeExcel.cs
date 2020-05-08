@@ -162,6 +162,10 @@ namespace AsposeExcelDataCapture
                 {
                     return CurrentWorksheet.Cells.GetCell(row,column).Value.ToString();
                 }
+                catch (NullReferenceException)
+                {
+                    return string.Empty;
+                }
                 catch
                 {
                     return Convert.ToString(CurrentWorksheet.Cells.GetCell(row, column).Value);
@@ -175,7 +179,7 @@ namespace AsposeExcelDataCapture
 
         public void WriteCell(int row, int column, string str)
         {
-            if (row >= 0 && column >= 0 && str != string.Empty)
+            if (row >= 0 && column >= 0)
             {
                 CurrentWorksheet.Cells[row, column].PutValue(str);
                 CurrentWorksheet.AutoFitColumn(column);
@@ -215,6 +219,32 @@ namespace AsposeExcelDataCapture
         {
             destinationExcel.CurrentWorksheet.Cells.CopyColumn(CurrentWorksheet.Cells,
                 sourceColumnIndex, destinationColumnIndex);
+
+            destinationExcel.CurrentWorksheet.AutoFitColumn(destinationColumnIndex);
+        }
+
+        public void CopyRange2Worksheet(int row,int sourceColumnIndex, int destinationColumnIndex, AsposeExcel destinationExcel)
+        {
+            List<Cell> list = new List<Cell>();
+
+            for (int i = 0; i < row; i++)
+                list.Add(destinationExcel.CurrentWorksheet.Cells.GetCell(i, destinationColumnIndex));
+
+            destinationExcel.CurrentWorksheet.Cells.CopyColumn(CurrentWorksheet.Cells,
+                sourceColumnIndex, destinationColumnIndex);
+
+            for (int i = 0; i < row; i++)
+            {
+                try
+                {
+                    destinationExcel.CurrentWorksheet.Cells.GetCell(i, destinationColumnIndex).PutValue(list[i].Value);
+                }
+                catch(NullReferenceException)
+                {
+                    //do nothing
+                }
+            }
+                
 
             destinationExcel.CurrentWorksheet.AutoFitColumn(destinationColumnIndex);
         }

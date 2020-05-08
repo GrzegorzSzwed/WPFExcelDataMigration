@@ -20,48 +20,63 @@ namespace TextMatchCalculation
 
         public static int NettoDistance(string firstString, string SecondString)
         {
-            int minimum = System.Math.Min(firstString.Length, SecondString.Length);
+            if(firstString.Length > 0 && SecondString.Length> 0)
+            {
+                int minimum = System.Math.Min(firstString.Length, SecondString.Length);
 
-            //count distance
-            int distance = Distance(firstString, SecondString);
+                //count distance
+                int distance = Distance(firstString, SecondString);
 
-            return distance - minimum;
+                return distance - minimum;
+            }
+            else
+            {
+                return System.Math.Max(firstString.Length, SecondString.Length);
+            }
+            
         }
 
         public static decimal Percent(string firstString, string SecondString)
         {
-            //count requirements
-            int maximum = System.Math.Max(firstString.Length, SecondString.Length);
-            int minimum = System.Math.Min(firstString.Length, SecondString.Length);
-            int gap = maximum - minimum;
-
-            //count distance
-            int distance = Distance(firstString, SecondString);
-
-            //count percent
-            if (distance >= gap && distance <= maximum)
+            if(firstString.Length > 0 && SecondString.Length > 0)
             {
-                decimal percent = 0;
-                if (maximum != minimum)
+                //count requirements
+                int maximum = System.Math.Max(firstString.Length, SecondString.Length);
+                int minimum = System.Math.Min(firstString.Length, SecondString.Length);
+                int gap = maximum - minimum;
+
+                //count distance
+                int distance = Distance(firstString, SecondString);
+
+                //count percent
+                if (distance >= gap && distance <= maximum)
                 {
-                    percent = 100 - System.Math.Round(
-                        (decimal)(distance - gap) / (decimal)(maximum - gap),
-                        4,
-                        MidpointRounding.ToEven) * 100;
+                    decimal percent = 0;
+                    if (maximum != minimum)
+                    {
+                        percent = 100 - System.Math.Round(
+                            (decimal)(distance - gap) / (decimal)(maximum - gap),
+                            4,
+                            MidpointRounding.ToEven) * 100;
+                    }
+                    else
+                    {
+                        percent = 100 - System.Math.Round(
+                            (decimal)(distance / maximum),
+                            4,
+                            MidpointRounding.ToEven) * 100;
+                    }
+
+                    return percent;
                 }
                 else
                 {
-                    percent = 100 - System.Math.Round(
-                        (decimal)(distance / maximum),
-                        4,
-                        MidpointRounding.ToEven) * 100;
+                    throw new NotImplementedException();
                 }
-
-                return percent;
             }
             else
             {
-                throw new NotImplementedException();
+                return 0;
             }
         }
 

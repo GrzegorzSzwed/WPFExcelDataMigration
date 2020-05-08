@@ -27,7 +27,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationRevision>3</ApplicationRevision>
     <ApplicationVersion>3.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -99,6 +99,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\ColumnParser.cs" />
+    <Compile Include="Models\CompareRange.cs" />
+    <Compile Include="Models\CompareRangeList.cs" />
     <Compile Include="Models\MigrationContainer.cs" />
     <Compile Include="Views\ComparisonView.xaml.cs">
       <DependentUpon>ComparisonView.xaml</DependentUpon>
@@ -111,6 +113,9 @@
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SimilarNames.xaml.cs">
+      <DependentUpon>SimilarNames.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ComparisonView.xaml">
       <SubType>Designer</SubType>
@@ -137,6 +142,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SimilarNames.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

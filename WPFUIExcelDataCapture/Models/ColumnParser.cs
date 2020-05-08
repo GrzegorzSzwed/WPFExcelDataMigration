@@ -14,6 +14,14 @@ namespace WPFUIExcelDataCapture.Models
         private int _destinationColumnIndex;
         private bool _key;
         private bool _textMatch;
+        private bool _avoidZero;
+
+        public bool AvoidZero
+        {
+            get { return _avoidZero; }
+            set { _avoidZero = value; }
+        }
+
 
         private List<string> _sourceColumnList;
         private List<string> _destinationColumnList;

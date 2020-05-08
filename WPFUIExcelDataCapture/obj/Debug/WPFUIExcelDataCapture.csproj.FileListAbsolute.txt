@@ -38,3 +38,5 @@ D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\bin\Deb
 D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\bin\Debug\Aspose.Cells.dll
 D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\bin\Debug\AsposeExcelDataCapture.pdb
 D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\bin\Debug\Aspose.Cells.xml
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\obj\Debug\Views\SimilarNames.g.cs
+D:\Moje dokumenty\Library\C#\WPFExcelDataMigration\WPFUIExcelDataCapture\obj\Debug\Views\SimilarNames.baml
